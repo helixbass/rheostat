@@ -41,7 +41,7 @@
     "chai-enzyme": "^0.8.0",
     "create-react-class": "^15.6.2",
     "enzyme": "^3.1.0",
-    "enzyme-adapter-react-15": "^1.0.4",
+    "enzyme-adapter-react-15": "^1.0.5",
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",

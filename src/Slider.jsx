@@ -80,6 +80,8 @@ const propTypes = {
   snap: PropTypes.bool,
   // the points we should snap to
   snapPoints: PropTypeArrOfNumber,
+  // should we snap for onValuesUpdated?
+  snapUpdates: PropTypes.bool,
   // the values
   values: PropTypeArrOfNumber,
 };
@@ -105,6 +107,7 @@ const defaultProps = {
   progressBar: 'div',
   snap: false,
   snapPoints: [],
+  snapUpdates: false,
   values: [
     SliderConstants.PERCENT_EMPTY,
   ],
@@ -198,11 +201,15 @@ class Rheostat extends React.Component {
     }
   }
 
-  getPublicState() {
+  getPublicState({ snap } = {}) {
     const { min, max } = this.props;
     const { values } = this.state;
 
-    return { max, min, values };
+    return {
+      max: snap ? this.getClosestSnapPoint(max) : max,
+      min: snap ? this.getClosestSnapPoint(min) : min,
+      values,
+    };
   }
 
   // istanbul ignore next
@@ -614,11 +621,12 @@ class Rheostat extends React.Component {
 
   // istanbul ignore next
   slideTo(idx, proposedPosition, onAfterSet) {
+    const { snapUpdates } = this.props;
     const nextState = this.getNextState(idx, proposedPosition);
 
     this.setState(nextState, () => {
       const { onValuesUpdated } = this.props;
-      if (onValuesUpdated) onValuesUpdated(this.getPublicState());
+      if (onValuesUpdated) onValuesUpdated(this.getPublicState({ snap: snapUpdates }));
       if (onAfterSet) onAfterSet();
     });
   }

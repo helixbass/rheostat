@@ -206,9 +206,9 @@ class Rheostat extends React.Component {
     const { values } = this.state;
 
     return {
-      max: snap ? this.getClosestSnapPoint(max) : max,
-      min: snap ? this.getClosestSnapPoint(min) : min,
-      values,
+      max,
+      min,
+      values: snap ? values.map(this.getClosestSnapPoint) : values,
     };
   }
 
